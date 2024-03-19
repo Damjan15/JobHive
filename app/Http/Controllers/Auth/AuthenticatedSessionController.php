@@ -29,7 +29,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Check the role of the user, and show different dashboard depending on the user
+        if ($request->user()->role === 'company') {
+            return redirect()->intended(RouteServiceProvider::COMPANY);
+        } else if ($request->user()->role === 'candidate') {
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
     }
 
     /**
